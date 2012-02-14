@@ -1,0 +1,10 @@
+{
+    "name": "supergroover"
+  , "version": "0.0.1"
+  , "private": false
+  , "dependencies": {
+      "express": "2.5.0"
+    , "jade": ">= 0.0.1"
+    , "superfeedr": ">= 0.0.1"
+  }
+}

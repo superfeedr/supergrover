@@ -1,0 +1,14 @@
+h1= title
+p Welcome to #{title}
+
+form(method='post', action='/')
+    div
+      label Grove.io Webhook:
+        input(name='groveio', value=groveio)
+    
+    div
+        label Feed:
+        input(name='feed', value=feed)
+        
+    div
+        input(type='submit', value='Save')
