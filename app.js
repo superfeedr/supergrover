@@ -12,6 +12,8 @@ var app = module.exports = express.createServer();
 
 // Configuration
 
+var baseUrl = 'http://severe-ice-3735.herokuapp.com/';
+
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
@@ -86,5 +88,7 @@ app.post('/', function(req, res) {
     
 });
 
-app.listen(3000);
+var port = process.env.PORT || 3000;
+
+app.listen(port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
