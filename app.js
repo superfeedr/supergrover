@@ -12,7 +12,7 @@ var app = module.exports = express.createServer();
 
 // Configuration
 
-var baseUrl = 'http://severe-ice-3735.herokuapp.com/';
+var baseUrl = 'http://severe-ice-3735.herokuapp.com';
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -50,7 +50,6 @@ app.get('/', function(req, res){
   res.render('index', { title: 'Supergroover', groveio: '', feed: '' })
 });
 
-
 // Update method
 app.post('/', function(req, res) {
     
@@ -61,7 +60,7 @@ app.post('/', function(req, res) {
     var postData = querystring.stringify({
         'hub.mode' : 'subscribe',
         'hub.topic': feed,
-        'hub.callback': '',
+        'hub.callback': baseUrl + '/superfeedr/' + (new Buffer(groveio).toString('base64')) + '/' + (new Buffer(feed).toString('base64')) ,
     });
     
     superfeedrOptions.headers['Content-Length'] = postData.length
@@ -87,6 +86,18 @@ app.post('/', function(req, res) {
     req.end();
     
 });
+
+// PubSubHubbub verification of intent
+app.get('/superfeedr/:groveio64/:feed64', function(req, res) {
+    console.log("VERIFY ME!")
+});
+
+
+// PubSubHubbub Notification
+app.post('/superfeedr/:groveio64/:feed64', function(req, res) {
+    console.log("NOTIFY ME");
+});
+
 
 var port = process.env.PORT || 3000;
 
