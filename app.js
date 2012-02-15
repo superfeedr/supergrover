@@ -80,8 +80,13 @@ app.post('/', function(req, res) {
     // Let's make a request to Superfeedr.
     var req = http.request(superfeedrOptions, function(response) {
       response.setEncoding('utf8');
+      
+      response.on('data', function(chunk) {
+          console.log("Superfeedr says: " + chunk);
+      });
+      
       if(response.statusCode === 204) {
-
+          
           var postData = {
               'service' : 'Supergrover',
               'url': baseUrl + '/?groveio=' + (new Buffer(groveio).toString('base64')) + '&feed=' + (new Buffer(feed).toString('base64')),
@@ -124,6 +129,7 @@ app.post('/', function(req, res) {
 
     req.on('error', function(e) {
       console.log('problem with request: ' + e.message);
+      
       res.render('failure', { title: 'Supergroover', groveio: groveio, feed: feed });
     });
     
