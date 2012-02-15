@@ -122,7 +122,7 @@ app.post('/', function(req, res) {
           res.render('success', { title: 'Supergroover', groveio: groveio, feed: feed});
       }
       else {
-          console.log("Superfeedr returns status: " + chunk);
+          console.log("Superfeedr returns status: " + response.statusCode);
           res.render('failure', { title: 'Supergroover', groveio: '', feed: ''});
       }
     });
