@@ -12,8 +12,10 @@ form(method='post', action='/')
     
     - if (groveio!== "" && feed !== "")
         div
+            input(type='hidden', name='mode', value='unsubscribe')
             input(type='submit', value='Stop Following')
     - else
         div
+            input(type='hidden', name='mode', value='subscribe')
             input(type='submit', value='Start Following')
     
