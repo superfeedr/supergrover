@@ -2,6 +2,8 @@
 /**
  * Module dependencies.
  */
+ 
+ // We need to use only  0.4.7 API because that's the only one supported by Heroku's Cedar.
 
 var express = require('express')
   , http = require('http')
@@ -30,8 +32,8 @@ var superfeedrOptions = {
   port: 80,
   path: '/hubbub',
   method: 'POST',
-  auth: 'demo:demo',
   headers: {
+      'Authorization': new Buffer('demo:demo').toString('base64'),
       'Content-Type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json'
   }
