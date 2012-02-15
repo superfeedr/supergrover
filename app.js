@@ -5,14 +5,17 @@
 
 var express = require('express')
   , http = require('http')
-  , querystring = require('querystring');
+  , https = require('https')
+  , querystring = require('querystring')
+  , url = require('url');
   
 
 var app = module.exports = express.createServer();
 
 // Configuration
 
-var baseUrl = 'http://severe-ice-3735.herokuapp.com';
+// var baseUrl = 'http://severe-ice-3735.herokuapp.com';
+var baseUrl = 'https://plant-leg.showoff.io';
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -35,6 +38,13 @@ var superfeedrOptions = {
   }
 };
 
+var groveioOptions = {
+    port: 80,
+    method: 'POST',
+    headers: {
+    }
+};
+
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
@@ -47,12 +57,14 @@ app.configure('production', function(){
 
 // show method
 app.get('/', function(req, res){
-  res.render('index', { title: 'Supergroover', groveio: '', feed: '' })
+    var groveio = new Buffer(req.param('groveio', ''), 'base64').toString('utf8')
+        , feed = new Buffer(req.param('feed', ''), 'base64').toString('utf8');
+
+  res.render('index', { title: 'Supergroover', groveio: groveio, feed: feed})
 });
 
 // Update method
 app.post('/', function(req, res) {
-    
     var groveio = req.param('groveio')
         , feed = req.param('feed');
     
@@ -66,36 +78,70 @@ app.post('/', function(req, res) {
     superfeedrOptions.headers['Content-Length'] = postData.length
     
     // Let's make a request to Superfeedr.
-    var req = http.request(superfeedrOptions, function(res) {
-      console.log('STATUS: ' + res.statusCode);
-      console.log('HEADERS: ' + JSON.stringify(res.headers));
-      res.setEncoding('utf8');
-      res.on('data', function (chunk) {
-        console.log('BODY: ' + chunk);
-      });
+    var req = https.request(superfeedrOptions, function(response) {
+      response.setEncoding('utf8');
+      if(response.statusCode === 204) {
+          res.render('success', { title: 'Supergroover', groveio: groveio, feed: feed});
+      }
+      else {
+          res.render('failure', { title: 'Supergroover', groveio: '', feed: ''});
+      }
     });
 
     req.on('error', function(e) {
       console.log('problem with request: ' + e.message);
       res.render('index', { title: 'Supergroover', groveio: groveio, feed: feed });
-      
     });
     
     // write data to request body
     req.write(postData);
     req.end();
-    
 });
 
 // PubSubHubbub verification of intent
 app.get('/superfeedr/:groveio64/:feed64', function(req, res) {
-    console.log("VERIFY ME!")
+    res.send(req.param('hub.challenge')); 
 });
 
 
 // PubSubHubbub Notification
 app.post('/superfeedr/:groveio64/:feed64', function(req, res) {
-    console.log("NOTIFY ME");
+    var groveio = new Buffer(req.params.groveio64, 'base64').toString('utf8')
+        , feed = new Buffer(req.params.feed64, 'base64').toString('utf8');
+    
+    // For each of the items in the notification:
+    for (i in req.body.items) {
+        var item = req.body.items[i];
+        // The params for the request
+        var postData = querystring.stringify({
+            'service' : 'Supergrover',
+            'message': item.title + " " + item.permalinkUrl,
+            'url': baseUrl + '/?groveio=' + (new Buffer(groveio).toString('base64')) + '&feed=' + (new Buffer(feed).toString('base64')),
+            'icon_url': "https://grove.io/static/img/avatar.png"
+        });
+        groveioOptions.headers['Content-Length'] = postData.length
+
+        var uri = url.parse(groveio);
+        groveioOptions.host =  uri.hostname;
+        groveioOptions.port =  uri.port;
+        groveioOptions.path =  uri.pathname;
+
+        // Let's make a request to Superfeedr.
+        var req = https.request(groveioOptions, function(response) {
+            response.on('data', function(chunk) {
+                console.log("Grove.io says: " + chunk);
+            });
+        });
+
+        req.on('error', function(e) {
+          console.log('problem with request: ' + e.message);
+        });
+
+        // write data to request body
+        req.write(postData);
+        req.end();
+    }
+    res.send("Thanks!"); 
 });
 
 
