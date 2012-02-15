@@ -86,7 +86,6 @@ app.post('/', function(req, res) {
       });
       
       if(response.statusCode === 204) {
-          
           var postData = {
               'service' : 'Supergrover',
               'url': baseUrl + '/?groveio=' + (new Buffer(groveio).toString('base64')) + '&feed=' + (new Buffer(feed).toString('base64')),
@@ -123,6 +122,7 @@ app.post('/', function(req, res) {
           res.render('success', { title: 'Supergroover', groveio: groveio, feed: feed});
       }
       else {
+          console.log("Superfeedr returns status: " + chunk);
           res.render('failure', { title: 'Supergroover', groveio: '', feed: ''});
       }
     });
