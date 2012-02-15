@@ -90,14 +90,15 @@ app.post('/', function(req, res) {
       if(response.statusCode === 204) {
           var postData = {
               'service' : 'Supergrover',
-              'url': baseUrl + '/?groveio=' + (new Buffer(groveio).toString('base64')) + '&feed=' + (new Buffer(feed).toString('base64')),
               'icon_url': "https://grove.io/static/img/avatar.png"
           }
           
           if(mode === "subscribe") {
+              postData.url = baseUrl + '/?groveio=' + (new Buffer(groveio).toString('base64')) + '&feed=' + (new Buffer(feed).toString('base64'));
               postData.message = "This channel is now following " + feed + ". Be ready!";
           }
           else if(mode === "unsubscribe") {
+              postData.url = baseUrl;
               postData.message = "This channel is not following " + feed + " anymore.";
           }
           postData = querystring.stringify(postData);
