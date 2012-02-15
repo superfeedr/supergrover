@@ -1,2 +1,5 @@
 This application allows you to hook up an RSS feed into a grove.io channel.
 
+TODO:
+* CSS
+* Use Heroku's provisioning of Superfeedr's addon
