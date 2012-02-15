@@ -33,7 +33,7 @@ var superfeedrOptions = {
   path: '/hubbub',
   method: 'POST',
   headers: {
-      'Authorization': new Buffer('demo:demo').toString('base64'),
+      'Authorization': 'Basic ' + new Buffer('demo:demo').toString('base64'),
       'Content-Type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json'
   }
