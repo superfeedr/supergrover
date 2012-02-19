@@ -14,9 +14,9 @@ form(method='post', action='/')
     - if (groveio!== "" && feed !== "")
         div
             input(type='hidden', name='mode', value='unsubscribe')
-            input(type='submit', value='Stop Following')
+            input.btn-danger.btn-large(type='submit', value='Stop Following')
     - else
         div
             input(type='hidden', name='mode', value='subscribe')
-            input.btn-danger.btn-large(type='submit', value='Start Following')
+            input.btn-primary.btn-large(type='submit', value='Start Following')
     
