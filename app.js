@@ -16,7 +16,7 @@ var app = module.exports = express.createServer();
 
 // Configuration
 
-var baseUrl = 'http://severe-ice-3735.herokuapp.com';
+var baseUrl = 'http://supergrover.herokuapp.com/';
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
