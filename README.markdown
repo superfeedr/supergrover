@@ -13,31 +13,32 @@ Deploying your own
 
 This assumes you have a Heroku account.
 
-1. Fork the repo
+### Fork the repo
 
 <code>
     $ git clone git://github.com/superfeedr/supergrover.git
     $ cd supergrover
 </code>
 
-2. Create the app
+### Create the app
 
 <code>
     $ heroku create --stack cedar
 </code>
+
 The output of this command should indicate the url of your application. Replace the `baseUrl` value in `app.js` [line 19] with your application's url.
 
 <code>
     $ git commit -m "changed the application url" -a
 </code>
 
-3. Grab the Superfeedr Addon
+### Grab the Superfeedr Addon
 
 <code>
     $ heroku addons:add superfeedr
 </code>
 
-4. Deploy
+### Deploy
 
 <code>
     $ git push heroku master
