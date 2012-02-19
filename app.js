@@ -17,6 +17,11 @@ var app = module.exports = express.createServer();
 // Configuration
 
 var baseUrl = 'http://supergrover.herokuapp.com/';
+var superfeedrCredentials = {
+    login: process.env.SUPERFEEDR_LOGIN, 
+    password: process.env.SUPERFEEDR_PASSWORD
+}
+
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -33,7 +38,7 @@ var superfeedrOptions = {
   path: '/hubbub',
   method: 'POST',
   headers: {
-      'Authorization': 'Basic ' + new Buffer('demo:demo').toString('base64'),
+      'Authorization': 'Basic ' + new Buffer(superfeedrCredentials.login + ':' + superfeedrCredentials.password).toString('base64'),
       'Content-Type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json'
   }
