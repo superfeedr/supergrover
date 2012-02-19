@@ -17,6 +17,7 @@ var app = module.exports = express.createServer();
 // Configuration
 
 var baseUrl = 'http://supergrover.herokuapp.com/';
+console.log(process.env);
 var superfeedrCredentials = {
     login: process.env.SUPERFEEDR_LOGIN, 
     password: process.env.SUPERFEEDR_PASSWORD
