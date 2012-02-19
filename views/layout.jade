@@ -2,5 +2,16 @@
 html
   head
     title= title
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body!= body
+  body
+    div.navbar
+        div.navbar-inner
+            div.container
+                a.brand(href ='/')= title
+  
+    div.container
+        != body
+        
+        footer.footer
+            p Powered by <a href="http://superfeedr.com">Superfeedr</a>&nbsp;<img src="http://www.gravatar.com/avatar/a2f7d4dd6df7dd59e4adab811c00a3a1?s=24" style="vertical-align: middle;">, on <a href="http://www.heroku.com/">Heroku</a> -  or <a href="https://github.com/superfeedr/supergrover">Fork it</a> or <a href="https://github.com/superfeedr/supergrover/blob/master/README">run your own</a>.

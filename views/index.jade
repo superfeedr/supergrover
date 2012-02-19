@@ -1,14 +1,15 @@
-h1= title
-p Welcome to #{title}
+header
+    h1= "Adding a new Feed to a Room"
+    p.lead Enter a feed url for which you want updates to be posted to the <a href='https://grove.io/'>Grove.io</a> room. Do not forget to add the Webhook for that room as well.
 
 form(method='post', action='/')
     div
-        label Grove.io Webhook:
-            input(name='groveio', value=groveio)
+        label Feed:
+        input.input-xxlarge(name='feed', value=feed)
     
     div
-        label Feed:
-            input(name='feed', value=feed)
+        label Grove.io webhook <span class="label label-info">get it in the room's settings</span>:
+        input.input-xxlarge(name='groveio', value=groveio)
     
     - if (groveio!== "" && feed !== "")
         div
@@ -17,5 +18,5 @@ form(method='post', action='/')
     - else
         div
             input(type='hidden', name='mode', value='subscribe')
-            input(type='submit', value='Start Following')
+            input.btn-primary.btn-large(type='submit', value='Start Following')
     
